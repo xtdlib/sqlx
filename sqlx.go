@@ -320,11 +320,23 @@ func (db *DB) Select(dest interface{}, query string, args ...interface{}) error 
 	return Select(db, dest, query, args...)
 }
 
+func (db *DB) MustSelect(dest interface{}, query string, args ...interface{}) {
+	if err := Select(db, dest, query, args...); err != nil {
+		panic(err)
+	}
+}
+
 // Get using this DB.
 // Any placeholder parameters are replaced with supplied args.
 // An error is returned if the result set is empty.
 func (db *DB) Get(dest interface{}, query string, args ...interface{}) error {
 	return Get(db, dest, query, args...)
+}
+
+func (db *DB) MustGet(dest interface{}, query string, args ...interface{}) {
+	if err := Get(db, dest, query, args...); err != nil {
+		panic(err)
+	}
 }
 
 // MustBegin starts a transaction, and panics on error.  Returns an *sqlx.Tx instead
