@@ -1,6 +1,6 @@
 # sqlx
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/jmoiron/sqlx/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/jmoiron/sqlx/tree/master) [![Coverage Status](https://coveralls.io/repos/github/jmoiron/sqlx/badge.svg?branch=master)](https://coveralls.io/github/jmoiron/sqlx?branch=master) [![Godoc](http://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/jmoiron/sqlx) [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://raw.githubusercontent.com/jmoiron/sqlx/master/LICENSE)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/xtdlib/sqlx/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/xtdlib/sqlx/tree/master) [![Coverage Status](https://coveralls.io/repos/github/xtdlib/sqlx/badge.svg?branch=master)](https://coveralls.io/github/xtdlib/sqlx?branch=master) [![Godoc](http://img.shields.io/badge/godoc-reference-blue.svg?style=flat)](https://godoc.org/github.com/xtdlib/sqlx) [![license](http://img.shields.io/badge/license-MIT-red.svg?style=flat)](https://raw.githubusercontent.com/xtdlib/sqlx/master/LICENSE)
 
 sqlx is a library which provides a set of extensions on go's standard
 `database/sql` library.  The sqlx versions of `sql.DB`, `sql.TX`, `sql.Stmt`,
@@ -14,8 +14,8 @@ Major additional concepts are:
 * Named parameter support including prepared statements
 * `Get` and `Select` to go quickly from query to struct/slice
 
-In addition to the [godoc API documentation](http://godoc.org/github.com/jmoiron/sqlx),
-there is also some [user documentation](http://jmoiron.github.io/sqlx/) that
+In addition to the [godoc API documentation](http://godoc.org/github.com/xtdlib/sqlx),
+there is also some [user documentation](http://xtdlib.github.io/sqlx/) that
 explains how to use `database/sql` along with sqlx.
 
 ## Recent Changes
@@ -46,7 +46,7 @@ will get major version number bumps.
 
 ## install
 
-    go get github.com/jmoiron/sqlx
+    go get github.com/xtdlib/sqlx
 
 ## issues
 
@@ -64,7 +64,7 @@ to give columns distinct names, `rows.Scan` to scan them manually, or
 ## usage
 
 Below is an example which shows some common use cases for sqlx.  Check 
-[sqlx_test.go](https://github.com/jmoiron/sqlx/blob/master/sqlx_test.go) for more
+[sqlx_test.go](https://github.com/xtdlib/sqlx/blob/master/sqlx_test.go) for more
 usage.
 
 
@@ -77,7 +77,7 @@ import (
     "log"
     
     _ "github.com/lib/pq"
-    "github.com/jmoiron/sqlx"
+    "github.com/xtdlib/sqlx"
 )
 
 var schema = `
@@ -118,7 +118,7 @@ func main() {
     db.MustExec(schema)
     
     tx := db.MustBegin()
-    tx.MustExec("INSERT INTO person (first_name, last_name, email) VALUES ($1, $2, $3)", "Jason", "Moiron", "jmoiron@jmoiron.net")
+    tx.MustExec("INSERT INTO person (first_name, last_name, email) VALUES ($1, $2, $3)", "Jason", "Moiron", "xtdlib@xtdlib.net")
     tx.MustExec("INSERT INTO person (first_name, last_name, email) VALUES ($1, $2, $3)", "John", "Doe", "johndoeDNE@gmail.net")
     tx.MustExec("INSERT INTO place (country, city, telcode) VALUES ($1, $2, $3)", "United States", "New York", "1")
     tx.MustExec("INSERT INTO place (country, telcode) VALUES ($1, $2)", "Hong Kong", "852")
@@ -133,14 +133,14 @@ func main() {
     jason, john := people[0], people[1]
 
     fmt.Printf("%#v\n%#v", jason, john)
-    // Person{FirstName:"Jason", LastName:"Moiron", Email:"jmoiron@jmoiron.net"}
+    // Person{FirstName:"Jason", LastName:"Moiron", Email:"xtdlib@xtdlib.net"}
     // Person{FirstName:"John", LastName:"Doe", Email:"johndoeDNE@gmail.net"}
 
     // You can also get a single result, a la QueryRow
     jason = Person{}
     err = db.Get(&jason, "SELECT * FROM person WHERE first_name=$1", "Jason")
     fmt.Printf("%#v\n", jason)
-    // Person{FirstName:"Jason", LastName:"Moiron", Email:"jmoiron@jmoiron.net"}
+    // Person{FirstName:"Jason", LastName:"Moiron", Email:"xtdlib@xtdlib.net"}
 
     // if you have null fields and use SELECT *, you must use sql.Null* in your struct
     places := []Place{}

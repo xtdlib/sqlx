@@ -26,7 +26,7 @@ import (
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/jmoiron/sqlx/reflectx"
+	"github.com/xtdlib/sqlx/reflectx"
 )
 
 func MultiExecContext(ctx context.Context, e ExecerContext, query string) {
@@ -68,7 +68,7 @@ func RunWithSchemaContext(ctx context.Context, schema Schema, t *testing.T, test
 
 func loadDefaultFixtureContext(ctx context.Context, db *DB, t *testing.T) {
 	tx := db.MustBeginTx(ctx, nil)
-	tx.MustExecContext(ctx, tx.Rebind("INSERT INTO person (first_name, last_name, email) VALUES (?, ?, ?)"), "Jason", "Moiron", "jmoiron@jmoiron.net")
+	tx.MustExecContext(ctx, tx.Rebind("INSERT INTO person (first_name, last_name, email) VALUES (?, ?, ?)"), "Jason", "Moiron", "xtdlib@xtdlib.net")
 	tx.MustExecContext(ctx, tx.Rebind("INSERT INTO person (first_name, last_name, email) VALUES (?, ?, ?)"), "John", "Doe", "johndoeDNE@gmail.net")
 	tx.MustExecContext(ctx, tx.Rebind("INSERT INTO place (country, city, telcode) VALUES (?, ?, ?)"), "United States", "New York", "1")
 	tx.MustExecContext(ctx, tx.Rebind("INSERT INTO place (country, telcode) VALUES (?, ?)"), "Hong Kong", "852")
@@ -751,8 +751,8 @@ func TestUsageContext(t *testing.T) {
 		if jason.LastName != "Moiron" {
 			t.Errorf("Expecting LastName of Moiron, got %s", jason.LastName)
 		}
-		if jason.Email != "jmoiron@jmoiron.net" {
-			t.Errorf("Expecting Email of jmoiron@jmoiron.net, got %s", jason.Email)
+		if jason.Email != "xtdlib@xtdlib.net" {
+			t.Errorf("Expecting Email of xtdlib@xtdlib.net, got %s", jason.Email)
 		}
 		if john.FirstName != "John" || john.LastName != "Doe" || john.Email != "johndoeDNE@gmail.net" {
 			t.Errorf("John Doe's person record not what expected:  Got %v\n", john)

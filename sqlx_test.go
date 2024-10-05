@@ -25,7 +25,7 @@ import (
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/jmoiron/sqlx/reflectx"
+	"github.com/xtdlib/sqlx/reflectx"
 )
 
 /* compile time checks that Db, Tx, Stmt (qStmt) implement expected interfaces */
@@ -243,7 +243,7 @@ func RunWithSchema(schema Schema, t *testing.T, test func(db *DB, t *testing.T, 
 
 func loadDefaultFixture(db *DB, t *testing.T) {
 	tx := db.MustBegin()
-	tx.MustExec(tx.Rebind("INSERT INTO person (first_name, last_name, email) VALUES (?, ?, ?)"), "Jason", "Moiron", "jmoiron@jmoiron.net")
+	tx.MustExec(tx.Rebind("INSERT INTO person (first_name, last_name, email) VALUES (?, ?, ?)"), "Jason", "Moiron", "xtdlib@xtdlib.net")
 	tx.MustExec(tx.Rebind("INSERT INTO person (first_name, last_name, email) VALUES (?, ?, ?)"), "John", "Doe", "johndoeDNE@gmail.net")
 	tx.MustExec(tx.Rebind("INSERT INTO place (country, city, telcode) VALUES (?, ?, ?)"), "United States", "New York", "1")
 	tx.MustExec(tx.Rebind("INSERT INTO place (country, telcode) VALUES (?, ?)"), "Hong Kong", "852")
@@ -934,8 +934,8 @@ func TestUsage(t *testing.T) {
 		if jason.LastName != "Moiron" {
 			t.Errorf("Expecting LastName of Moiron, got %s", jason.LastName)
 		}
-		if jason.Email != "jmoiron@jmoiron.net" {
-			t.Errorf("Expecting Email of jmoiron@jmoiron.net, got %s", jason.Email)
+		if jason.Email != "xtdlib@xtdlib.net" {
+			t.Errorf("Expecting Email of xtdlib@xtdlib.net, got %s", jason.Email)
 		}
 		if john.FirstName != "John" || john.LastName != "Doe" || john.Email != "johndoeDNE@gmail.net" {
 			t.Errorf("John Doe's person record not what expected:  Got %v\n", john)
