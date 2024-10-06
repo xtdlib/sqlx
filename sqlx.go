@@ -314,6 +314,10 @@ func (db *DB) NamedExec(query string, arg interface{}) (sql.Result, error) {
 	return NamedExec(db, query, arg)
 }
 
+func (db *DB) MustNamedExec(query string, arg interface{}) sql.Result {
+	return must1(NamedExec(db, query, arg))
+}
+
 // Select using this DB.
 // Any placeholder parameters are replaced with supplied args.
 func (db *DB) Select(dest interface{}, query string, args ...interface{}) error {
@@ -321,9 +325,7 @@ func (db *DB) Select(dest interface{}, query string, args ...interface{}) error 
 }
 
 func (db *DB) MustSelect(dest interface{}, query string, args ...interface{}) {
-	if err := Select(db, dest, query, args...); err != nil {
-		panic(err)
-	}
+	must(Select(db, dest, query, args...))
 }
 
 // Get using this DB.
@@ -334,9 +336,7 @@ func (db *DB) Get(dest interface{}, query string, args ...interface{}) error {
 }
 
 func (db *DB) MustGet(dest interface{}, query string, args ...interface{}) {
-	if err := Get(db, dest, query, args...); err != nil {
-		panic(err)
-	}
+	must(Get(db, dest, query, args...))
 }
 
 // MustBegin starts a transaction, and panics on error.  Returns an *sqlx.Tx instead
@@ -366,6 +366,10 @@ func (db *DB) Queryx(query string, args ...interface{}) (*Rows, error) {
 		return nil, err
 	}
 	return &Rows{Rows: r, unsafe: db.unsafe, Mapper: db.Mapper}, err
+}
+
+func (db *DB) MustQueryx(query string, args ...interface{}) *Rows {
+	return must1(db.Queryx(query, args...))
 }
 
 // QueryRowx queries the database and returns an *sqlx.Row.
@@ -1063,4 +1067,32 @@ func missingFields(transversals [][]int) (field int, err error) {
 		}
 	}
 	return 0, nil
+}
+
+func must(err error) {
+	if err != nil {
+		panic(err)
+	}
+	return
+}
+
+func must1[T any](v T, err error) T {
+	if err != nil {
+		panic(err)
+	}
+	return v
+}
+
+func must2[T1 any, T2 any](v T1, v2 T2, err error) (T1, T2) {
+	if err != nil {
+		panic(err)
+	}
+	return v, v2
+}
+
+func must3[T1 any, T2 any, T3 any](v T1, v2 T2, v3 T3, err error) (T1, T2, T3) {
+	if err != nil {
+		panic(err)
+	}
+	return v, v2, v3
 }
