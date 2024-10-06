@@ -252,7 +252,7 @@ type DB struct {
 //
 //lint:ignore ST1003 changing this would break the package interface.
 func NewDb(db *sql.DB, driverName string) *DB {
-	return &DB{DB: db, driverName: driverName, Mapper: mapper()}
+	return &DB{DB: db, driverName: driverName, Mapper: mapper(), unsafe: true}
 }
 
 // DriverName returns the driverName passed to the Open function for this DB.
@@ -266,7 +266,7 @@ func Open(driverName, dataSourceName string) (*DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &DB{DB: db, driverName: driverName, Mapper: mapper()}, err
+	return &DB{DB: db, driverName: driverName, Mapper: mapper(), unsafe: true}, err
 }
 
 // MustOpen is the same as sql.Open, but returns an *sqlx.DB instead and panics on error.
